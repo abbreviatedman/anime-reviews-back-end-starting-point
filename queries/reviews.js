@@ -9,6 +9,19 @@ const getAllReviews = async () => {
   }
 };
 
+const getAnimeReviews = async (id) => {
+  try {
+    const reviews = await db.any(
+      "SELECT * FROM reviews WHERE anime_id = $1",
+      id
+    );
+
+    return reviews;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getReview = async (id) => {
   try {
     const review = await db.one("SELECT * FROM reviews WHERE id = $1", id);
@@ -73,4 +86,5 @@ module.exports = {
   newReview,
   updateReview,
   deleteReview,
+  getAnimeReviews,
 };
