@@ -1,5 +1,6 @@
 const express = require("express");
-const anime = express.Router();
+const reviewsController = require("./reviewsController");
+
 const {
   getAllAnimes,
   addNewAnime,
@@ -7,6 +8,9 @@ const {
   deleteAnime,
   updateAnime,
 } = require("../queries/animes");
+
+const anime = express.Router();
+anime.use("/:id/reviews", reviewsController);
 
 // here we use the function we wrote inside of our queries.
 // we have to await it because we dont want this file to move
@@ -54,8 +58,8 @@ anime.put("/:id", async (request, response) => {
     const updated = await updateAnime(anime, id);
 
     response.status(200).json(updated);
-  } catch (error) {
-    return error;
+  } catch (_) {
+    response.status(500).json({ error: "server error" });
   }
 });
 
